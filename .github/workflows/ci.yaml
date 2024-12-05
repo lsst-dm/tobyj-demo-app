@@ -6,6 +6,7 @@ env:
   # this version. Quote the version to avoid interpretation as a floating
   # point number.
   PYTHON_VERSION: "3.12"
+  UV_PYTHON_PREFERENCE: "system"
 
 "on":
   merge_group: {}
@@ -19,8 +20,8 @@ env:
       - "dependabot/**"
       - "gh-readonly-queue/**"
       - "renovate/**"
-      - "tickets/**"
-      - "u/**"
+      # - "tickets/**"
+      # - "u/**"
     tags:
       - "*"
 
@@ -35,7 +36,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: "pyproject.toml"
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
@@ -66,8 +67,10 @@ jobs:
     # won't be set.
     if: >
       github.event_name != 'merge_group'
-      && (startsWith(github.ref, 'refs/tags/')
-          || startsWith(github.head_ref, 'tickets/'))
+      && (
+       startsWith(github.ref, 'refs/tags/') ||
+       startsWith(github.head_ref, 'u/tobyj/')
+      )
 
     steps:
       - uses: actions/checkout@v4
@@ -79,3 +82,41 @@ jobs:
         with:
           image: ${{ github.repository }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Release -- when PR is merged to main, bump version, make tag, recommit
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up UV
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "0.5"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install Release Manager
+        run: >-
+          uv tool install python-semantic-release
+
+      - name: Configure Git
+        run:
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+
+      - name: Bump Project Version
+        env:
+          GIT_COMMIT_AUTHOR: "${{github.actor}} <${{github.actor}}@users.noreply.github.com>"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          semantic-release
+          version --patch
+          --no-vcs-release --skip-build --no-changelog

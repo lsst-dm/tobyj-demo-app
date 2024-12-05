@@ -30,10 +30,15 @@ Homepage = "https://tobyj-demo-app.lsst.io"
 Source = "https://github.com/lsst-dm/tobyj-demo-app"
 
 [build-system]
-requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=6.2"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.setuptools_scm]
+[tool.hatch.build.targets.wheel]
+packages = ["src/tobyjdemoapp"]
+
+[tool.hatch.version]
+path = "src/tobyjdemoapp/__init__.py"
+fallback-version = "0.0.0"
 
 [tool.coverage.run]
 parallel = true
@@ -111,3 +116,31 @@ format = "md"
 md_header_level = "2"
 new_fragment_template = "file:changelog.d/_template.md.jinja"
 skip_fragments = "_template.md.jinja"
+
+[tool.semantic_release]
+version_variables = ["src/tobyjdemoapp/__init__.py:__version__"]
+commit_author = {env = "GIT_COMMIT_AUTHOR"}
+tag_format = "{version}"
+
+[tool.semantic_release.branches.main]
+match = "main"
+prerelease = false
+
+[tool.semantic_release.branches.ticket]
+match = "^tickets/DM-\\d+(.*)$"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release.branches.user]
+match = "^u/(.*)/(.*)$"
+prerelease_token = "alpha"
+prerelease = true
+
+[tool.semantic_release.changelog]
+
+[tool.semantic_release.publish]
+upload_to_vcs_release = false
+
+[tool.semantic_release.remote]
+name = "origin"
+type = "github"

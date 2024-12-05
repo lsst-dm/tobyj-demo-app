@@ -14,10 +14,13 @@ asgi-lifespan
 coverage[toml]
 httpx
 mypy
+pre-commit
 pydantic
 pytest
 pytest-asyncio
 pytest-cov
+ruff
+python-semantic-release>=9.15.1
 
 # Documentation
 scriv
