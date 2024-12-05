@@ -12,8 +12,6 @@ env:
 "on":
   merge_group: {}
   pull_request:
-    branches:
-      - main
   push:
     branches-ignore:
       # These should always correspond to pull requests, so ignore them for
@@ -94,10 +92,12 @@ jobs:
     needs: [lint, test]
     timeout-minutes: 10
     if: >-
-      github.event.pull_request.merged == true
+      github.event.pull_request.closed_at != 0
+      && github.event.pull_request.merged == true
     steps:
-      - run: |
-          echo "${{ github.head_ref }} merged into ${{ github.ref }}"
+      - run: >-
+          echo "${{ github.head_ref }} merged into ${{ github.ref }}
+          by {{ github.event.pull_request.merged_by.name }} <{{ github.event.pull_request.merged_by.email }}>"
       - uses: actions/checkout@v4
 
       - name: Set up UV
