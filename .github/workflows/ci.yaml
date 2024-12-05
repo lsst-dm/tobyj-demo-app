@@ -7,6 +7,7 @@ env:
   # point number.
   PYTHON_VERSION: "3.12"
   UV_PYTHON_PREFERENCE: "system"
+  BUILDKIT_PROGRESS: "plain"
 
 "on":
   merge_group: {}
@@ -20,8 +21,8 @@ env:
       - "dependabot/**"
       - "gh-readonly-queue/**"
       - "renovate/**"
-      # - "tickets/**"
-      # - "u/**"
+      - "tickets/**"
+      - "u/**"
     tags:
       - "*"
 
@@ -89,7 +90,7 @@ jobs:
     timeout-minutes: 10
     if: >-
       github.event.pull_request.merged == true &&
-      github.ref == 'refs/heads/main'
+      github.ref == '/refs/heads/main'
     steps:
       - uses: actions/checkout@v4
 
@@ -108,7 +109,7 @@ jobs:
           uv tool install python-semantic-release
 
       - name: Configure Git
-        run:
+        run: |
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}"
 
