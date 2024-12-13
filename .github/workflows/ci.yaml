@@ -12,6 +12,15 @@ env:
 "on":
   merge_group: {}
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
+    branches:
+      - main
+      - "u/**"
+      - "tickets/**"
   push:
     # branches-ignore:
     #   # These should always correspond to pull requests, so ignore them for
@@ -93,7 +102,8 @@ jobs:
     needs: [lint, test]
     timeout-minutes: 10
     if: >-
-      github.event.pull_request.closed_at != 0
+      github.event_name == 'pull_request'
+      && github.event.action == 'closed'
       && github.event.pull_request.merged == true
     steps:
       - run: >-
