@@ -53,9 +53,8 @@ jobs:
         with:
           root_options: "-vv"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          git_committer_name: ${{ env.GIT_USERNAME}}
-          git_committer_email: ${{ env.GIT_USEREMAIL}}
-          force: patch
+          git_committer_name: ${{ env.GIT_USERNAME }}
+          git_committer_email: ${{ env.GIT_USEREMAIL }}
           build: false
           changelog: false
           vcs_release: false
@@ -64,11 +63,13 @@ jobs:
       # workflow_dispatch to affect the tag-related build.
       - name: Trigger Build Workflow
         uses: actions/github-script@v7
+        env:
+          TAG_REF: ${{ steps.release.outputs.tag }}
         with:
           script: |
             github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'build.yaml',
-              ref: `${steps.release.outputs.tag}`
+              ref: '${ process.env.TAG_REF }'
             })
