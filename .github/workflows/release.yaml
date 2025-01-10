@@ -63,10 +63,6 @@ jobs:
           changelog: false
           vcs_release: false
 
-      - name: Check outputs
-        run: |
-          echo "${{ steps.release.outputs.* }}"
-
       # Pushing the tag will not trigger any related events, so we have to use
       # workflow_dispatch to affect the tag-related build.
       - name: Trigger Build Workflow

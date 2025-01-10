@@ -33,6 +33,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: evaluate expression
+        run: |
+          echo "Tagged release: ${{ github.ref_type == 'tag' }}"
+
       - uses: lsst-sqre/build-and-push-to-ghcr@v1
         id: build
         with:
