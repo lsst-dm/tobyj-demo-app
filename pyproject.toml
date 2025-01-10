@@ -129,7 +129,7 @@ prerelease = false
 [tool.semantic_release.branches.ticket]
 match = "^tickets/DM-\\d+(.*)$"
 prerelease_token = "rc"
-prerelease = false
+prerelease = true
 
 [tool.semantic_release.branches.user]
 match = "^u/(.*)/(.*)$"
