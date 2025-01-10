@@ -119,7 +119,6 @@ skip_fragments = "_template.md.jinja"
 
 [tool.semantic_release]
 version_variables = ["src/tobyjdemoapp/__init__.py:__version__"]
-commit_author = {env = "GIT_COMMIT_AUTHOR"}
 tag_format = "{version}"
 
 [tool.semantic_release.branches.main]
