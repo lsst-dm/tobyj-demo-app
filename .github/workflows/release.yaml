@@ -7,6 +7,7 @@ env:
   # reason to support multiple Python versions, so all actions are run with
   # this version. Quote the version to avoid interpretation as a floating
   # point number.
+  ACTIONS_STEP_DEBUG: "true"
   PYTHON_VERSION: "3.12"
   UV_PYTHON_PREFERENCE: "system"
   BUILDKIT_PROGRESS: "plain"
@@ -58,7 +59,7 @@ jobs:
 
       - name: Check outputs
         run: |
-          echo "${{ steps.release.outputs }}"
+          echo "${{ steps.release.outputs.* }}"
 
       # Pushing the tag will not trigger any related events, so we have to use
       # workflow_dispatch to affect the tag-related build.
