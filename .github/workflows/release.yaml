@@ -31,9 +31,6 @@ jobs:
       && github.event.action == 'closed'
       && github.event.pull_request.merged == true
     steps:
-      - run: >-
-          echo "${{ github.head_ref }} merged into ${{ github.ref }}
-          by {{ github.event.pull_request.user.name }} <{{ github.event.pull_request.user.email }}>"
 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -64,7 +61,7 @@ jobs:
       - name: Trigger Build Workflow
         uses: actions/github-script@v7
         if: >-
-          steps.release.outputs.release
+          steps.release.outputs.released == true
         env:
           TAG_REF: ${{ steps.release.outputs.tag }}
         with:
