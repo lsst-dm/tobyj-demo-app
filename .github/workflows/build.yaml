@@ -1,0 +1,42 @@
+# Only build (optionally push) the project image when a release is made, which
+# is represented by a push-tag event or a workflow_dispatch from another workflow.
+---
+name: Build-Push
+
+env:
+  # Current supported Python version. For applications, there is generally no
+  # reason to support multiple Python versions, so all actions are run with
+  # this version. Quote the version to avoid interpretation as a floating
+  # point number.
+  PYTHON_VERSION: "3.12"
+  UV_PYTHON_PREFERENCE: "system"
+  BUILDKIT_PROGRESS: "plain"
+
+"on":
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  ci:
+    uses:
+      ./.github/workflows/ci.yaml
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [ci]
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: lsst-sqre/build-and-push-to-ghcr@v1
+        id: build
+        with:
+          image: ${{ github.repository }}
+          target: runtime-image
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          push: false
