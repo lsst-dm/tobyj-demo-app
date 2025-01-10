@@ -51,6 +51,9 @@ jobs:
       - name: Make Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.15.2
+        env:
+          ACTIONS_STEP_DEBUG: "true"
+          ACTIONS_RUNNER_DEBUG: "true"
         with:
           root_options: "-vv"
           github_token: ${{ secrets.GITHUB_TOKEN }}
