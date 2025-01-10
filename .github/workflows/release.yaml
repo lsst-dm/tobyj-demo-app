@@ -44,6 +44,9 @@ jobs:
       - name: Force correct release branch
         run: git checkout -B ${{ github.ref_name }} ${{ github.sha }}
 
+      # NOTE: PSR will create an incorrect tag with its default tag_format if there
+      # are no tags in the repository; seed the repo tag list with 0.0.0 to workaround
+      # this problem.
       - name: Make Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.15.2
@@ -67,5 +70,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'build.yaml',
-              ref: ${{ steps.release.outputs.tag }}
+              ref: ${steps.release.outputs.tag}
             })
