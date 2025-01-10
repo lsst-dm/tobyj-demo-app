@@ -39,6 +39,9 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.sha }}
 
+      - name: Force correct release branch
+        run: git checkout -B ${{ github.ref_name }} ${{ github.sha }}
+
       - name: Make Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.15.2
