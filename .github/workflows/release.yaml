@@ -10,6 +10,8 @@ env:
   PYTHON_VERSION: "3.12"
   UV_PYTHON_PREFERENCE: "system"
   BUILDKIT_PROGRESS: "plain"
+  GIT_USERNAME: "github_actions[bot]"
+  GIT_USEREMAIL: "41898282+github_actions[bot]@users.noreply.github.com"
 
 "on":
   pull_request:
@@ -46,9 +48,10 @@ jobs:
         id: release
         uses: python-semantic-release/python-semantic-release@v9.15.2
         with:
+          root_options: "-vv"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          git_committer_name: "github_actions[bot]"
-          git_committer_email: "41898282+github_actions[bot]@users.noreply.github.com"
+          git_committer_name: ${{ env.GIT_USERNAME}}
+          git_committer_email: ${{ env.GIT_USEREMAIL}}
           force: patch
           build: false
           changelog: false
