@@ -63,6 +63,8 @@ jobs:
       # workflow_dispatch to affect the tag-related build.
       - name: Trigger Build Workflow
         uses: actions/github-script@v7
+        if: >-
+          steps.release.outputs.release
         env:
           TAG_REF: ${{ steps.release.outputs.tag }}
         with:
