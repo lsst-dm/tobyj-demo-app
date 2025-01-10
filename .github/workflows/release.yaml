@@ -56,12 +56,16 @@ jobs:
           changelog: false
           vcs_release: false
 
+      - name: Check outputs
+        run: |
+          echo "${{ steps.release.outputs }}"
+
       # Pushing the tag will not trigger any related events, so we have to use
       # workflow_dispatch to affect the tag-related build.
       - name: Trigger Build Workflow
         uses: actions/github-script@v7
         if: >-
-          steps.release.outputs.released == true
+          steps.release.outputs.released == "true"
         env:
           TAG_REF: ${{ steps.release.outputs.tag }}
         with:
