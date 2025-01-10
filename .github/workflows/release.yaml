@@ -56,5 +56,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'build.yaml',
-              ref: steps.release.outputs.tag
+              ref: ${{ steps.release.outputs.tag }}
             })

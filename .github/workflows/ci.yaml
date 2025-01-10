@@ -8,6 +8,7 @@ name: "CI"
     branches:
       - "tickets/**"
       - "u/**"
+      - "!main"
 
 env:
   UV_FROZEN: "1"
