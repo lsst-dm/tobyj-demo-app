@@ -1,0 +1,60 @@
+# Build a project release whenever a pull request is merged to main.
+---
+name: Release
+
+env:
+  # Current supported Python version. For applications, there is generally no
+  # reason to support multiple Python versions, so all actions are run with
+  # this version. Quote the version to avoid interpretation as a floating
+  # point number.
+  PYTHON_VERSION: "3.12"
+  UV_PYTHON_PREFERENCE: "system"
+  BUILDKIT_PROGRESS: "plain"
+
+"on":
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+
+  # Release -- when PR is merged to main, bump version, make tag, recommit
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: >-
+      github.event_name == 'pull_request'
+      && github.event.action == 'closed'
+      && github.event.pull_request.merged == true
+    steps:
+      - run: >-
+          echo "${{ github.head_ref }} merged into ${{ github.ref }}
+          by {{ github.event.pull_request.user.name }} <{{ github.event.pull_request.user.email }}>"
+      - uses: actions/checkout@v4
+
+      - name: Make Release
+        id: release
+        uses: python-semantic-release/pythong-semantic-release@9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git_committer_name: "github_actions[bot]"
+          git_committer_email: "41898282+github_actions[bot]@users.noreply.github.com"
+          force: patch
+          build: false
+          changelog: false
+          vcs_release: false
+
+      # Pushing the tag will not trigger any related events, so we have to use
+      # workflow_dispatch to affect the tag-related build.
+      - name: Trigger Build Workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'build.yml',
+              ref: ${{ steps.release.outputs.tag }}
+            })
