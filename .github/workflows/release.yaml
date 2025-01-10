@@ -36,7 +36,7 @@ jobs:
 
       - name: Make Release
         id: release
-        uses: python-semantic-release/pythong-semantic-release@9
+        uses: python-semantic-release/python-semantic-release@9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           git_committer_name: "github_actions[bot]"
