@@ -11,3 +11,4 @@ jobs:
       do-not-merge-checker: true
       verbose: true
       workflow-ref: u/tobyj/commitlint
+      custom-rules: .github/commitlint.ts
