@@ -31,7 +31,7 @@ Homepage = "https://tobyj-demo-app.lsst.io"
 Source = "https://github.com/lsst-dm/tobyj-demo-app"
 
 [tool.uv.sources]
-cm-commandline = { git="https://github.com/lsst-dm/cm-service", branch="tickets/DM-XXXXX" }
+cm-commandline = { git="https://github.com/lsst-dm/cm-service", branch="main" }
 
 [build-system]
 requires = ["hatchling"]
