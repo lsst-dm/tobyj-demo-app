@@ -10,3 +10,4 @@ jobs:
       rebase-checker: true
       do-not-merge-checker: true
       verbose: true
+      workflow-ref: u/tobyj/commitlint
