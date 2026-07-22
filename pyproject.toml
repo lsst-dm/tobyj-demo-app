@@ -18,8 +18,9 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.12"
-# Use requirements/main.in for runtime dependencies instead.
-dependencies = []
+dependencies = [
+    "cm-commandline"
+]
 dynamic = ["version"]
 
 [project.scripts]
@@ -28,6 +29,9 @@ tobyj-demo-app = "tobyjdemoapp.cli:main"
 [project.urls]
 Homepage = "https://tobyj-demo-app.lsst.io"
 Source = "https://github.com/lsst-dm/tobyj-demo-app"
+
+[tool.uv.sources]
+cm-commandline = { git="https://github.com/lsst-dm/cm-service", branch="tickets/DM-XXXXX" }
 
 [build-system]
 requires = ["hatchling"]
