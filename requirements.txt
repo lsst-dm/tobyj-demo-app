@@ -61,7 +61,7 @@ idna==3.18
     #   httpx
 jinja2==3.1.6
     # via lsst-cm-service
-lsst-cm-service @ git+https://github.com/lsst-dm/cm-service@tickets/DM-55418/notifier
+lsst-cm-service @ git+https://github.com/lsst-dm/cm-service@main
     # via tobyj-demo-app
 mako==1.3.12
     # via alembic
