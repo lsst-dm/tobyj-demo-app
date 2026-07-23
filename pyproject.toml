@@ -18,9 +18,9 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.13"
-dependencies = [
-    "lsst-cm-service"
-]
+dependencies = []
+#     "lsst-cm-service"
+# ]
 dynamic = ["version"]
 
 [project.scripts]
@@ -30,8 +30,8 @@ tobyj-demo-app = "tobyjdemoapp.cli:main"
 Homepage = "https://tobyj-demo-app.lsst.io"
 Source = "https://github.com/lsst-dm/tobyj-demo-app"
 
-[tool.uv.sources]
-lsst-cm-service = { git="https://github.com/lsst-dm/cm-service", branch="tickets/DM-55418/notifier" }
+# [tool.uv.sources]
+# lsst-cm-service = { git="https://github.com/lsst-dm/cm-service", branch="tickets/DM-55418/notifier" }
 
 [build-system]
 requires = ["hatchling"]
