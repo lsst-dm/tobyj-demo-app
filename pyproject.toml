@@ -17,9 +17,10 @@ classifiers = [
     "Operating System :: POSIX",
     "Typing :: Typed",
 ]
-requires-python = ">=3.12"
-# Use requirements/main.in for runtime dependencies instead.
+requires-python = ">=3.13"
 dependencies = []
+#     "lsst-cm-service"
+# ]
 dynamic = ["version"]
 
 [project.scripts]
@@ -28,6 +29,9 @@ tobyj-demo-app = "tobyjdemoapp.cli:main"
 [project.urls]
 Homepage = "https://tobyj-demo-app.lsst.io"
 Source = "https://github.com/lsst-dm/tobyj-demo-app"
+
+# [tool.uv.sources]
+# lsst-cm-service = { git="https://github.com/lsst-dm/cm-service", branch="tickets/DM-55418/notifier" }
 
 [build-system]
 requires = ["hatchling"]
